@@ -35,7 +35,6 @@ class Philosopher extends Thread {
             System.out.println("Философ " + id + " выходит со стола");
             semaphore.release();
             sleep((long) (new Random().nextFloat() * 5000));
-
         }catch (InterruptedException e) {
             System.out.println ("у философа " + id + " проблемы со здоровьем");
         }
