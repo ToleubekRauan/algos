@@ -23,10 +23,12 @@ public class Main {
 
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[0].length; j++) {
-                list.add(traverse(i, j, matrix, visited));
+                int value = traverse(i, j, matrix, visited);
+                if (value > 0) {
+                    list.add(value);
+                }
             }
         }
-        list.removeIf(el -> el == 0);
         return list;
     }
 
