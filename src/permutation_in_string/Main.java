@@ -1,6 +1,8 @@
 package permutation_in_string;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Main {
@@ -12,15 +14,11 @@ public class Main {
     }
 
     public static boolean checkInclusion(String s1, String s2) {
-        Set<String> set = new HashSet<>();
-        for (int i = 0; i <= s2.length() - s1.length(); i++) {
-            set.add(s2.substring(i, i + s1.length()));
-        }
-        System.out.println(set);
-        Set<String> permutations = new HashSet<>();
-        permute(s1, "", permutations);
-        for (String perm : permutations) {
-            if (set.contains(perm)) {
+        List<String> list = new ArrayList<>();
+        permutation(list, s1, "");
+
+        for (String word : list) {
+            if (s2.indexOf(word) != -1) {
                 return true;
             }
         }
@@ -28,21 +26,17 @@ public class Main {
 
     }
 
-    static void permute(String s, String answer, Set<String> permutations) {
-
-        if (s.length() == 0)
-        {
-            permutations.add(answer);
-            return;
+    private static void permutation(List<String> perms, String word, String ans) {
+        if (word.length() == 0) {
+            perms.add(ans);
         }
 
-        for(int i = 0 ;i < s.length(); i++)
-        {
-            char ch = s.charAt(i);
-            String left_substr = s.substring(0, i);
-            String right_substr = s.substring(i + 1);
-            String rest = left_substr + right_substr;
-            permute(rest, answer + ch, permutations);
+        for (int i = 0; i < word.length(); i++) {
+            char ch = word.charAt(i);
+
+            String remain = word.substring(0, i) + word.substring(i + 1);
+
+            permutation(perms, remain, ans + ch);
         }
     }
 

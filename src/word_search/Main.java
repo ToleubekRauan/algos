@@ -24,12 +24,9 @@ public class Main {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
                 boolean[][] seen = new boolean[board.length][board[0].length];
-                try {
-                    helper(board, i, j, word, 0, seen, "");
-                }catch (Exception e) {
+                if (helper(board, i, j, word, seen, "").equals(word)) {
                     return true;
                 }
-
 
             }
         }
@@ -37,18 +34,18 @@ public class Main {
         return false;
     }
 
-    private static String helper(char[][] board, int x, int y, String word, int idx, boolean[][] seen, String str) throws Exception {
-        if (str.equals(word)) {
-            throw new Exception("found");
+    private static String helper(char[][] board, int x, int y, String word, boolean[][] seen, String str)  {
+        if (word.equals(str)) {
+            return str;
         }
-        if (x < 0 || x >= board.length || y < 0 || y >= board[0].length || idx >= word.length() || word.charAt(idx) != board[x][y] || seen[x][y]) {
+        if (x < 0 || x >= board.length || y < 0 || y >= board[0].length || !word.contains(str) || seen[x][y]) {
             return "";
         }
         seen[x][y] = true;
-        return helper(board, x + 1, y, word, idx + 1, seen, str + board[x][y]) +
-        helper(board, x - 1, y, word, idx + 1, seen, str + board[x][y]) +
-        helper(board, x, y + 1, word, idx + 1, seen, str + board[x][y]) +
-        helper(board, x, y - 1, word, idx + 1, seen, str + board[x][y]);
+        return helper(board, x + 1, y, word,  seen, str + board[x][y]) +
+        helper(board, x - 1, y, word, seen, str + board[x][y]) +
+        helper(board, x, y + 1, word,  seen, str + board[x][y]) +
+        helper(board, x, y - 1, word,  seen, str + board[x][y]);
 
     }
 }

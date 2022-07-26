@@ -1,61 +1,51 @@
 package decode_string;
 
+import java.util.List;
+import java.util.Stack;
+
 public class Main {
 
     public static void main(String[] args) {
-//        String str = "3[a]2[bc]";
-//        System.out.println(decodeString(str));
-//
-//        String str2 = "2[abc]3[cd]ef";
-//        System.out.println(decodeString(str2));
-        //Output: "abcabccdcdcdef"
-
         String str3 = "3[a2[c]]";
         System.out.println(decodeString(str3));
-        //Output: "accaccacc"
     }
 
 
     public static String decodeString(String s) {
-        StringBuilder sb = new StringBuilder();
-        return helper(s, sb);
-    }
+        Stack<Integer> counts = new Stack<>();
+        Stack<String> result = new Stack<>();
 
-    public static String helper(String s, StringBuilder sb) {
-        boolean isStarted = false;
-        int occurence = 0;
-        int position = 0;
-        int endPosition = 0;
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == '[') {
-                if (isStarted) {
-                    sb.append(helper(s.substring(i), new StringBuilder()));
-                }
-                position = i+1;
-                isStarted = true;
+        String res = "";
 
-            }else if (s.charAt(i) == ']') {
-                if (!isStarted) {
-                    return sb.toString();
-                }
-                endPosition = i;
-                isStarted = false;
-                String tmp = s.substring(position, endPosition);
-                while (occurence-- > 1) {
-                    sb.append(tmp);
-                }
+        int index = 0;
 
-            }else if (Character.isDigit(s.charAt(i))) {
-                if (isStarted) {
-                    String str = helper(s.substring(i), new StringBuilder());
-                    sb.append(str);
-                }else {
-                    occurence = Integer.parseInt(String.valueOf(s.charAt(i)));
+        while (index < s.length()) {
+
+            if (Character.isDigit(s.charAt(index))) {
+                int count = 0;
+                while (Character.isDigit(s.charAt(index))) {
+                    count = 10 * count + (s.charAt(index) - '0');
+                    index++;
                 }
+                counts.push(count);
+            }else if (s.charAt(index) == '[') {
+                result.push(res);
+                res = "";
+                index++;
+            }else if (s.charAt(index) == ']') {
+                StringBuilder sb = new StringBuilder(result.pop());
+                int count = counts.pop();
+                for (int i = 0; i < count; i++) {
+                    sb.append(res);
+                }
+                res = sb.toString();
+                index++;
             }else {
-                sb.append(s.charAt(i));
+                res += s.charAt(index);
+                index++;
             }
         }
-        return sb.toString();
+        return res;
     }
+
 }
