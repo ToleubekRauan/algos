@@ -5,7 +5,7 @@ public class Main {
     private static int sum = 0;
 
     public static void main(String[] args) {
-        convertToGreater(null)
+        convertToGreater(null);
     }
 
     class TreeNode {
